@@ -6,6 +6,6 @@ pool:
 
 steps:
   - script: |
-      docker build -t example-project:latest .
-      docker run --rm -u root example-project:latest build
+      docker build -t flight-planner:latest .
+      docker run --rm -u root flight-planner:latest build
     displayName: 'Build'
