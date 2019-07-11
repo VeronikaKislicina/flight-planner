@@ -1,11 +1,15 @@
 package io.codelex.flightplanner.flights;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class SearchFlightDTO {
 
+    @NotNull
     private String from;
+    @NotNull
     private String to;
+    @NotNull
     private LocalDate departureDate;
 
     public String getFrom() {

@@ -36,11 +36,10 @@ public class FlightService {
         return false;
     }
 
-    public Boolean checkIfToAndFromAirportsAreSimilar(AddFlightRequestDTO addFlightRequestDTO) {
+    public Boolean checkIfAirportsAreSimilarWhenAddingFlight(AddFlightRequestDTO addFlightRequestDTO) {
 
         if (addFlightRequestDTO.getFrom().equals(addFlightRequestDTO.getTo())) {
             return true;
-
         }
         return false;
     }
@@ -51,7 +50,7 @@ public class FlightService {
             throw new IllegalStateException();
         }
 
-        if (checkIfToAndFromAirportsAreSimilar(addFlightRequestDTO)) {
+        if (checkIfAirportsAreSimilarWhenAddingFlight(addFlightRequestDTO)) {
             throw new IllegalArgumentException();
         }
 
@@ -75,14 +74,43 @@ public class FlightService {
         return flight;
     }
 
+    public Boolean checkIfAirportsAreSimilarWhenSearchingFlight(SearchFlightDTO searchFlightDTO) {
+
+        if (searchFlightDTO.getFrom().trim().toLowerCase().equals(searchFlightDTO.getTo().trim().toLowerCase())) {
+            return true;
+        }
+        return false;
+    }
+
     public List<Flight> searchFlight(SearchFlightDTO searchFlightDTO) {
 
         List<Flight> searchedFlights = new ArrayList<>();
 
+        if (checkIfAirportsAreSimilarWhenSearchingFlight(searchFlightDTO)) {
+            throw new IllegalArgumentException();
+        }
 
-
+//        for (Flight flight : flights) {
+//            if (searchFlightDTO.getFrom().equals(searchFlightDTO.getTo())
+//            ) {
+//                searchedFlights.add(flight);
+//            }
+//        }
 
         return searchedFlights;
+    }
+
+    public ResponseEntity findFlightById(Long id) {
+
+        ResponseEntity responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        for (Flight flight : flights) {
+            if (flight.getId().equals(id)) {
+                responseEntity = new ResponseEntity<>(flight, HttpStatus.OK);
+            }
+        }
+
+        return responseEntity;
     }
 }
 

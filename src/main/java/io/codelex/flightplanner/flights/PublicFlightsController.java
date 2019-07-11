@@ -1,5 +1,6 @@
 package io.codelex.flightplanner.flights;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,6 +22,12 @@ public class PublicFlightsController {
     public PageResult<Flight> searchFlight(@Valid @RequestBody SearchFlightDTO searchFlightDTO) {
         flightService.searchFlight(searchFlightDTO);
         return new PageResult<>();
+    }
+
+    @GetMapping("/flights/{id}")
+    public ResponseEntity findFlight(@Valid @PathVariable ("id") Long id) {
+        ResponseEntity flightById = flightService.findFlightById(id);
+        return flightById;
     }
 
     @ResponseStatus(BAD_REQUEST)
