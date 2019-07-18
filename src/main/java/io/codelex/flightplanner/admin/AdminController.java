@@ -33,6 +33,12 @@ public class AdminController {
         return new ResponseEntity<>(flight, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("flights/{id}")
+    public void deleteFlight(@PathVariable Long id) {
+        flightService.deleteFlight(id);
+        new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     void handleIllegalArgument() {

@@ -1,5 +1,6 @@
 package io.codelex.flightplanner.flights;
 
+import io.codelex.flightplanner.airport.Airport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class FlightService {
         return false;
     }
 
-    public Flight addFlight(AddFlightRequestDTO addFlightRequestDTO) {
+    public synchronized Flight addFlight(AddFlightRequestDTO addFlightRequestDTO) {
 
         if (checkIfFlightPresent(addFlightRequestDTO)) {
             throw new IllegalStateException();
@@ -74,6 +75,10 @@ public class FlightService {
         return flight;
     }
 
+    public void deleteFlight(Long id) {
+
+    }
+
     public Boolean checkIfAirportsAreSimilarWhenSearchingFlight(SearchFlightDTO searchFlightDTO) {
 
         if (searchFlightDTO.getFrom().trim().toLowerCase().equals(searchFlightDTO.getTo().trim().toLowerCase())) {
@@ -82,20 +87,13 @@ public class FlightService {
         return false;
     }
 
-    public List<Flight> searchFlight(SearchFlightDTO searchFlightDTO) {
+    public synchronized List<Flight> searchFlight(SearchFlightDTO searchFlightDTO) {
 
         List<Flight> searchedFlights = new ArrayList<>();
 
         if (checkIfAirportsAreSimilarWhenSearchingFlight(searchFlightDTO)) {
             throw new IllegalArgumentException();
         }
-
-//        for (Flight flight : flights) {
-//            if (searchFlightDTO.getFrom().equals(searchFlightDTO.getTo())
-//            ) {
-//                searchedFlights.add(flight);
-//            }
-//        }
 
         return searchedFlights;
     }
@@ -112,5 +110,27 @@ public class FlightService {
 
         return responseEntity;
     }
+
+
+    public List<Airport> searchFlightRequest(String search) {
+
+        List<Airport> airports = new ArrayList<>();
+
+        for (Flight flight : flights) {
+
+            Airport airport = flight.getFrom();
+
+            if (airport.getCity().toUpperCase().startsWith(search.trim().toUpperCase()) ||
+                airport.getCountry().toUpperCase().startsWith(search.trim().toUpperCase()) ||
+                airport.getAirport().toUpperCase().startsWith(search.trim().toUpperCase())) {
+
+                airports.add(airport);
+
+            }
+        }
+        return airports;
+    }
+
+
 }
 

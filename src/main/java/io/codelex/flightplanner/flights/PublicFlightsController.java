@@ -1,12 +1,14 @@
 package io.codelex.flightplanner.flights;
 
+import io.codelex.flightplanner.airport.Airport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CONFLICT;
+import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +30,12 @@ public class PublicFlightsController {
     public ResponseEntity findFlight(@Valid @PathVariable ("id") Long id) {
         ResponseEntity flightById = flightService.findFlightById(id);
         return flightById;
+    }
+
+    @GetMapping("/airports")
+    public List<Airport> searchFlightRequest(String search) {
+        return flightService.searchFlightRequest(search);
+//        return new ResponseEntity<>(flight, OK);
     }
 
     @ResponseStatus(BAD_REQUEST)
