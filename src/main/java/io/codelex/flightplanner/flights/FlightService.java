@@ -26,7 +26,8 @@ public class FlightService {
     public Boolean checkIfFlightPresent(AddFlightRequestDTO addFlightRequestDTO) {
 
         for (Flight flight : flights) {
-            if (flight.getArrivalTime().equals(addFlightRequestDTO.getArrivalTime()) &&
+            if (
+                    flight.getArrivalTime().equals(addFlightRequestDTO.getArrivalTime()) &&
                     flight.getDepartureTime().equals(addFlightRequestDTO.getDepartureTime()) &&
                     flight.getFrom().equals(addFlightRequestDTO.getFrom()) &&
                     flight.getTo().equals(addFlightRequestDTO.getTo()) &&
@@ -75,7 +76,7 @@ public class FlightService {
         return flight;
     }
 
-    public void deleteFlight(Long id) {
+    public synchronized void deleteFlight(Long id) {
 
     }
 
@@ -87,7 +88,7 @@ public class FlightService {
         return false;
     }
 
-    public synchronized List<Flight> searchFlight(SearchFlightDTO searchFlightDTO) {
+    public List<Flight> searchFlight(SearchFlightDTO searchFlightDTO) {
 
         List<Flight> searchedFlights = new ArrayList<>();
 
